@@ -1,5 +1,5 @@
-%clear all;
-%clc;
+clear;
+clc;
 x=[0 0;
   1 0;
   0 1;
@@ -19,8 +19,17 @@ x=[0 0;
   9 8;
   8 9;
   9 9];
-load('/Users/Jeiel/Dropbox/模式识别（研2016）/实验/实验1 K-均值聚类/ClusterSamples.mat');
- [u, result] = KMeans(x,2);
+fileid = fopen('balance-scale.data');
+data = textscan(fileid,'%s %d %d %d %d','Delimiter', ',');
+truecategory = cell2mat(data{1});
+tmpdata = zeros(size(data{1},1) ,size(data,2)-1); %exclude category
+for ii = 1:size(data,2)-1
+    tmpdata(:,ii) = data{ii+1};
+end
+data = tmpdata;
+centroids = [8,8;9,9];
+[centroids, result, SSE] = KMeans(data,3);
+display(SSE)
 
 %  tic
 %  [u, result] = KMeans(ClusterSamples,10);
