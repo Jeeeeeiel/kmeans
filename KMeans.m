@@ -39,6 +39,7 @@ while 1
         [~, index] = min(distance);
         result(ii) = index - 1;
     end
+    emptyclusterexist = false;
     for ii = 1:size(centroids,1)%check is there any empty cluster exists
         sub_data = data(result == (ii-1),:);%get all data belongs to cluster (ii-1)
         if size(sub_data, 1) == 0%empty cluster
@@ -46,9 +47,13 @@ while 1
             sub_data = data(result == (clusterwithmaxSSE),:);
             distance = pdist2(centroids(clusterwithmaxSSE,:),sub_data,'euclidean');
             [~, index] = max(distance);
-            centroids(ii,:) = sub_data(index);
-            continue;
+            centroids(ii,:) = sub_data(index,:);
+            emptyclusterexist = true;
+            break;
         end
+    end
+    if emptyclusterexist
+        continue
     end
     %calculate the center of every clusters
     finish = 1;
